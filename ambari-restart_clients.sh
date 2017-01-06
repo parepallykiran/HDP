@@ -1,0 +1,66 @@
+for i in `cat hosts.list`
+do
+curl -k -uadmin:admin -H 'X-Requested-By: ambari' -X POST -d '
+{
+   "RequestInfo":{
+      "command":"RESTART",
+      "context":"Restart Clients",
+      "operation_level":{
+         "level":"HOST",
+         "cluster_name":"c1"
+      }
+   },
+   "Requests/resource_filters":[
+      {
+         "service_name":"ZOOKEEPER",
+         "component_name":"ZOOKEEPER_CLIENT",
+         "hosts":"'"${i}"'"
+      },
+      {
+         "service_name":"HDFS",
+         "component_name":"HDFS_CLIENT",
+         "hosts":"'"${i}"'"
+      },
+      {
+         "service_name":"HBASE",
+         "component_name":"HBASE_CLIENT",
+         "hosts":"'"${i}"'"
+      },
+      {
+         "service_name":"HIVE",
+         "component_name":"HCAT",
+         "hosts":"'"${i}"'"
+      },
+      {
+         "service_name":"HIVE",
+         "component_name":"HIVE_CLIENT",
+         "hosts":"'"${i}"'"
+      },
+      {
+         "service_name":"MAPREDUCE2",
+         "component_name":"MAPREDUCE2_CLIENT",
+         "hosts":"'"${i}"'"
+      },
+      {
+         "service_name":"PIG",
+         "component_name":"PIG",
+         "hosts":"'"${i}"'"
+      },
+      {
+         "service_name":"SPARK",
+         "component_name":"SPARK_CLIENT",
+         "hosts":"'"${i}"'"
+      },
+      {
+         "service_name":"TEZ",
+         "component_name":"TEZ_CLIENT",
+         "hosts":"'"${i}"'"
+      },
+      {
+         "service_name":"YARN",
+         "component_name":"YARN_CLIENT",
+         "hosts":"'"${i}"'"
+      }
+   ]
+}' http://<ambari_server_host>:<port>/api/v1/clusters/c1/requests
+done
