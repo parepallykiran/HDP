@@ -12,7 +12,7 @@ do
         tableName=`echo $i | awk '{ print $4}' | awk --field-separator=";" '{print $1}'`;
         hqlfile=$hqlDir/$tableName.hql
         hive  --hiveconf hive.metastore.uris=thrift://<<soucrcehive>>:9083 -e "$i" > $hqlfile;
-        sed -i 's/hdfs\:\/\/hddev//g' $hqlfile
+        sed -i 's/hdfs\:\/\/<<NameNode service name for source hdfs>>//g' $hqlfile
         hive --hiveconf hive.metastore.uris=thrift://<<destination_hive>>:9083 -f $hqlfile
         hive --hiveconf hive.metastore.uris=thrift://<<destination_hive>>:9083 "ANALYZE TABLE $tableName COMPUTE STATISTICS;"
 done < $ddlfile
